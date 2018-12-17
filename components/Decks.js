@@ -5,8 +5,11 @@ import DeckListElement from "./dumb/DeckListElement";
 
 class Decks extends Component {
 
-    onButtonPress = (id) => {
-        console.log('pressed: ', id);
+    onButtonPress = (id, name) => {
+        this.props.navigation.navigate('Deck', {
+            id,
+            name
+        });
     };
 
     render() {

@@ -19,6 +19,7 @@ class AddDeck extends Component {
         this.setState({
             name: ''
         });
+        this.props.navigation.navigate('Decks');
     };
 
     render() {

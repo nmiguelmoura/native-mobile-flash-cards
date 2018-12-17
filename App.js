@@ -7,9 +7,11 @@ import middleware from './middleware';
 import {createMaterialTopTabNavigator, createStackNavigator, createAppContainer} from 'react-navigation';
 import Decks from './components/Decks';
 import AddDeck from './components/AddDeck';
+import Deck from './components/Deck';
 import AppStatusBar from './components/dumb/AppStatusBar';
 import {THEME_COLOR, TAB_ACTIVE_COLOR} from "./helpers/config";
 import {handleInitialData} from "./actions/shared";
+import AddCard from "./components/AddCard";
 
 // DEV ONLY
 // TODO: REMOVE CALLS FOR REACTOTRON
@@ -50,7 +52,35 @@ const Tabs = createMaterialTopTabNavigator({
         }
     });
 
-const AppContainer = createAppContainer(Tabs);
+const MainNavigator = createStackNavigator({
+    Home: {
+        screen: Tabs,
+        navigationOptions: {
+            header: null
+        }
+    },
+    Deck: {
+        screen: Deck,
+        navigationOptions: {
+            headerTintColor: "#FFFFFF",
+            headerStyle: {
+                backgroundColor: THEME_COLOR
+            }
+        }
+    },
+    AddCard: {
+        screen: AddCard,
+        navigationOptions: {
+            headerTintColor: "#FFFFFF",
+            headerStyle: {
+                backgroundColor: THEME_COLOR
+            },
+            title: 'Add card'
+        }
+    }
+});
+
+const AppContainer = createAppContainer(MainNavigator);
 
 export default class App extends React.Component {
     componentDidMount() {
@@ -62,7 +92,7 @@ export default class App extends React.Component {
             <Provider store={store}>
                 <View style={{flex: 1}}>
                     <AppStatusBar backgroundColor={THEME_COLOR}/>
-                    <AppContainer />
+                    <AppContainer/>
                 </View>
             </Provider>
         );

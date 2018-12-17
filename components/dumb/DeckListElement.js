@@ -6,7 +6,7 @@ const DeckListElement = (props) => {
     const {id, name, cardCount, onPress} = props;
 
     return(
-        <TouchableOpacity onPress={() => onPress(id)}>
+        <TouchableOpacity onPress={() => onPress(id, name)}>
             <Text>{name}</Text>
             <Text>{cardCount} card(s)</Text>
         </TouchableOpacity>

@@ -1,4 +1,4 @@
-import {ADD_DECK, RECEIVE_DECKS} from '../actions/decks';
+import {ADD_DECK, RECEIVE_DECKS, DELETE_DECK} from '../actions/decks';
 
 export default function decks(state = {}, action) {
     switch(action.type) {
@@ -13,6 +13,17 @@ export default function decks(state = {}, action) {
             return {
                 ...state,
                 [deck.id]: action.deck
+            };
+
+        case DELETE_DECK:
+            const newDecks = {
+                ...state
+            };
+
+            delete newDecks[action.id];
+
+            return {
+                ...newDecks
             };
 
         default:
