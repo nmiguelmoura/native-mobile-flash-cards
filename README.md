@@ -1,2 +1,2 @@
 #Mobile Flash Cards
-React native project (in development).
+React native project -> in development...
