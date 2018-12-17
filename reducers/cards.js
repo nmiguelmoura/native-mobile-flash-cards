@@ -6,7 +6,7 @@ export default function cards(state = {}, action) {
             return {
                 ...state,
                 ...action.cards
-            }
+            };
 
         default:
             return state;

@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import DeckListElement from "./dumb/DeckListElement";
 
 class Decks extends Component {
+
     onButtonPress = (id) => {
         console.log('pressed: ', id);
     };
@@ -41,6 +42,7 @@ class Decks extends Component {
 }
 
 function mapStateToProps({decks, cards}) {
+
     const cardsGrouped = {};
 
     Object.getOwnPropertyNames(cards).map(cardId => {
