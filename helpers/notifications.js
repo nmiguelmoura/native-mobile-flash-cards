@@ -1,6 +1,7 @@
 import {AsyncStorage} from 'react-native';
 import {Notifications, Permissions} from "expo";
 
+const DAY_IN_MILISSECONDS = 24 * 60 * 60 * 1000;
 const NOTIFICATION_KEY = 'FlashCards:notifications';
 
 function clearLocalNotification() {
@@ -23,7 +24,26 @@ function createNotification() {
     }
 }
 
+function launchNotification() {
+    Notifications.cancelAllScheduledNotificationsAsync();
+
+    let now = new Date();
+
+    let tomorrow = new Date(now.getTime() + DAY_IN_MILISSECONDS);
+    tomorrow.setHours(now.getHours());
+    tomorrow.setMinutes(now.getMinutes());
+
+    Notifications.scheduleLocalNotificationAsync(
+        createNotification(),
+        {
+            time: tomorrow,
+            repeat: 'day'
+        }
+    );
+}
+
 export function setLocalNotification() {
+    clearLocalNotification();
     AsyncStorage.getItem(NOTIFICATION_KEY)
         .then(data => JSON.parse(data))
         .then(data => {
@@ -31,19 +51,8 @@ export function setLocalNotification() {
                 Permissions.askAsync(Permissions.NOTIFICATIONS)
                     .then(({status}) => {
                         if(status === "granted") {
-                            Notifications.cancelAllScheduledNotificationsAsync();
 
-                            let now = new Date();
-                            now.setHours(10);
-                            now.setMinutes(45);
-
-                            Notifications.scheduleLocalNotificationAsync(
-                                createNotification(),
-                                {
-                                    time: now,
-                                    repeat: 'day'
-                                }
-                            );
+                            launchNotification();
 
                             AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true));
                         }
@@ -52,4 +61,15 @@ export function setLocalNotification() {
             }
         })
         .catch();
+}
+
+export function reScheduleLocalNotification() {
+    AsyncStorage.getItem(NOTIFICATION_KEY)
+        .then(data => JSON.parse(data))
+        .then(data => {
+            if(data) {
+                launchNotification();
+            }
+        })
+        .catch(e => console.log(e));
 }

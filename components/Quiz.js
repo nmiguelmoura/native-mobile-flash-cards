@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import Card from './dumb/Card';
 import {CORRECT_GREEN, INCORRECT_RED, THEME_COLOR} from "../helpers/config";
+import {reScheduleLocalNotification} from "../helpers/notifications";
 
 class Quiz extends Component {
     state = {
@@ -10,8 +11,7 @@ class Quiz extends Component {
         cards: [],
         totalCards: 0,
         correctGuesses: 0,
-        showingAnswer: false,
-
+        showingAnswer: false
     };
 
     static navigationOptions = ({navigation}) => {
@@ -49,7 +49,13 @@ class Quiz extends Component {
         });
     };
 
+    goBackToDeck = () => {
+        reScheduleLocalNotification();
+        this.props.navigation.goBack();
+    };
+
     restart = () => {
+        reScheduleLocalNotification();
         this.setState(prev => ({
             cards: [...prev.originalCards],
             correctGuesses: 0,
@@ -88,7 +94,7 @@ class Quiz extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.btn}
-                            onPress={() => this.props.navigation.goBack()}>
+                            onPress={this.goBackToDeck}>
                             <Text
                                 style={styles.btnText}>
                                 Back to Deck
@@ -178,13 +184,13 @@ function mapStateToProps({cards}, {navigation}) {
     const {deckId} = navigation.state.params;
     let deckCards = [];
     Object.getOwnPropertyNames(cards)
-        .forEach((cardId) => {
-            const card = cards[cardId];
+    .forEach((cardId) => {
+        const card = cards[cardId];
 
-            if (card.deck === deckId) {
-                deckCards.push(card);
-            }
-        });
+        if (card.deck === deckId) {
+            deckCards.push(card);
+        }
+    });
 
     return {
         cards: deckCards,
