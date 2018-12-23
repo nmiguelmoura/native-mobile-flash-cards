@@ -15,19 +15,40 @@ class AddDeck extends Component {
         });
     };
 
-    submitDeck = () => {
-        this.props.saveDeck(this.state.name);
+    validateFields = () => {
+        const {name} = this.state;
+        if(name === '') {
+            alert("Provide a name for the new deck");
+            return false;
+        }
+
+        return true;
+    };
+
+    deckSaved = (id, name) => {
         this.setState({
             name: ''
         });
-        this.props.navigation.navigate('Decks');
+
+        this.props.navigation.navigate('Deck', {
+            id,
+            name
+        });
+    };
+
+    submitDeck = () => {
+        if(!this.validateFields()) {
+            return false;
+        }
+
+        this.props.saveDeck(this.state.name, this.deckSaved);
     };
 
     render() {
         return (
             <View style={styles.container}>
                 <View>
-                    <Text style={styles.info}>Add new Deck</Text>
+                    <Text style={styles.info}>Add new deck</Text>
                 </View>
                 <View style={styles.form}>
                     <Text style={styles.label}>Deck Name</Text>
@@ -47,7 +68,7 @@ class AddDeck extends Component {
     }
 }
 
-const styles = {
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
@@ -92,12 +113,12 @@ const styles = {
         paddingBottom: 14,
         textAlign: 'center'
     }
-};
+});
 
 function mapDispatchToProps(dispatch) {
     return {
-        saveDeck: (name) => {
-            dispatch(handleSaveDeck(name))
+        saveDeck: (name, onSaveFinished) => {
+            dispatch(handleSaveDeck(name, onSaveFinished))
         }
     }
 }

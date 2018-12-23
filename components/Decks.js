@@ -114,7 +114,8 @@ function mapStateToProps({decks, cards}) {
 
     Object.getOwnPropertyNames(cards).map(cardId => {
         const card = cards[cardId];
-        cardsGrouped[card.deck] = cardsGrouped[cardId] ? cardsGrouped[cardId] + 1 : 1;
+        console.log('»»»»', cardsGrouped);
+        cardsGrouped[card.deck] = cardsGrouped[card.deck] ? cardsGrouped[card.deck] + 1 : 1;
     });
 
     return {

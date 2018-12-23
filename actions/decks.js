@@ -19,11 +19,12 @@ export function addDeck(deck) {
     }
 }
 
-export function handleSaveDeck(name) {
+export function handleSaveDeck(name, onSaveFinish) {
     return (dispatch) => {
         saveDeck(name)
             .then(deck => {
                 dispatch(addDeck(deck));
+                onSaveFinish(deck.id, deck.name);
             })
             .catch(error => console.log(error));
     };

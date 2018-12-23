@@ -12,6 +12,8 @@ import AppStatusBar from './components/dumb/AppStatusBar';
 import {THEME_COLOR, TAB_ACTIVE_COLOR} from "./helpers/config";
 import {handleInitialData} from "./actions/shared";
 import AddCard from "./components/AddCard";
+import Quiz from "./components/Quiz";
+import {setLocalNotification} from './helpers/notifications';
 
 // DEV ONLY
 // TODO: REMOVE CALLS FOR REACTOTRON
@@ -77,6 +79,15 @@ const MainNavigator = createStackNavigator({
             },
             title: 'Add card'
         }
+    },
+    Quiz: {
+        screen: Quiz,
+        navigationOptions: {
+            headerTintColor: "#FFFFFF",
+            headerStyle: {
+                backgroundColor: THEME_COLOR
+            }
+        }
     }
 });
 
@@ -85,6 +96,7 @@ const AppContainer = createAppContainer(MainNavigator);
 export default class App extends React.Component {
     componentDidMount() {
         store.dispatch(handleInitialData());
+        setLocalNotification();
     }
 
     render() {
